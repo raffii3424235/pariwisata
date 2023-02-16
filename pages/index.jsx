@@ -16,28 +16,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className={inter.className}>
-          <div>
-            <form>
-              <input
-                type="text"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
-                name="username"
-                id="username"
-                autoComplete="off"
-                placeholder="username"
-              />
-              <input
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                name="password"
-                id="password"
-                placeholder="password"
-              />
-              <button>Login</button>
-            </form>
-          </div>
+          <div></div>
         </div>
       </main>
     </>

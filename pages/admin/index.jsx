@@ -1,17 +1,35 @@
-import authUser from "@/lib/authUser";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { getSession, signOut } from "next-auth/react";
 
 const Admin = () => {
-  const { userLogin } = authUser();
-  const router = useRouter();
-  useEffect(() => {
-    if (userLogin === false) {
-      router.push("/");
-    }
-  }, [userLogin]);
+  function handleSignOut() {
+    signOut();
+  }
 
-  return <div>Admin</div>;
+  return (
+    <div>
+      <h1>ADMIN PAGE</h1>
+      <div>
+        <button onClick={handleSignOut}>Sign Out</button>
+      </div>
+    </div>
+  );
 };
 
 export default Admin;
+
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+}
