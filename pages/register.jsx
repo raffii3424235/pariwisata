@@ -1,7 +1,10 @@
 import axios from "axios";
 import { useFormik } from "formik";
+import { useRouter } from "next/router";
 
 export default function Register() {
+  const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -13,9 +16,7 @@ export default function Register() {
   function onSubmit(values) {
     axios
       .post("/api/signup", values)
-      .then(function (response) {
-        console.log(response);
-      })
+      .then(function (response) {})
       .catch(function (error) {
         console.log(error);
       });

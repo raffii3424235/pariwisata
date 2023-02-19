@@ -1,8 +1,8 @@
 import { useFormik } from "formik";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
-export default function Login() {
+const Login = () => {
   const router = useRouter();
 
   const formik = useFormik({
@@ -28,7 +28,6 @@ export default function Login() {
     return error;
   }
 
-  console.log(formik.errors);
   async function onSubmit(values) {
     const status = await signIn("credentials", {
       redirect: false,
@@ -37,7 +36,6 @@ export default function Login() {
       callbackUrl: "/admin/",
     });
     if (status.ok) router.push(status.url);
-    console.log(status);
   }
 
   return (
@@ -66,4 +64,23 @@ export default function Login() {
       </div>
     </div>
   );
+};
+
+export default Login;
+
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/admin/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 }

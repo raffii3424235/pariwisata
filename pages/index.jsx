@@ -1,11 +1,25 @@
 import Head from "next/head";
 import { Inter } from "@next/font/google";
-import styles from "@/styles/Home.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/blogs/blog")
+      .then(function (response) {
+        const data = response.data;
+        setItems(data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <>
       <Head>
@@ -14,11 +28,19 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={inter.className}>
-          <div></div>
+      <div className={inter.className}>
+        <div className="space-y-4">
+          {items.map((elm) => (
+            <div
+              className="bg-blue-600 rounded-md py-4 px-5 text-white"
+              key={elm.id}
+            >
+              <h1>{elm.title}</h1>
+              <p>{elm.article}</p>
+            </div>
+          ))}
         </div>
-      </main>
+      </div>
     </>
   );
 }
