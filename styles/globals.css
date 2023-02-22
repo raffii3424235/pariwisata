@@ -1,3 +1,31 @@
+* html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #24272c;
+  color: #fff;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold;
+  }
+  h1 {
+    @apply text-base md:text-lg lg:text-xl;
+  }
+  h2 {
+    @apply text-sm md:text-base lg:text-lg;
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

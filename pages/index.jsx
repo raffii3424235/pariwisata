@@ -1,23 +1,31 @@
 import Head from "next/head";
-import { Inter } from "@next/font/google";
+import { Sora } from "@next/font/google";
+import Layout from "@/components/layout";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/autoplay";
+import "swiper/css/pagination";
+import { Pagination } from "swiper";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { Card } from "@/components/card";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Sora({ subsets: ["latin"] });
 
 export default function Home() {
-  const [items, setItems] = useState([]);
+  const [offset, setOffset] = useState(0);
+
+  function handleScroll() {
+    const element = document.getElementById("point");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  }
 
   useEffect(() => {
-    axios
-      .get("/api/blogs/blog")
-      .then(function (response) {
-        const data = response.data;
-        setItems(data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const onScroll = () => setOffset(window.pageYOffset);
+    window.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
@@ -28,18 +36,64 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={inter.className}>
-        <div className="space-y-4">
-          {items.map((elm) => (
-            <div
-              className="bg-blue-600 rounded-md py-4 px-5 text-white"
-              key={elm.id}
-            >
-              <h1>{elm.title}</h1>
-              <p>{elm.article}</p>
+      <div className={font.className}>
+        <Layout>
+          <div
+            className={`w-screen h-screen bg-hero bg-cover bg-center ${
+              offset > 160 ? "saturate-100" : "saturate-50"
+            } duration-500 ease-linear bg-no-repeat bg-fixed flex justify-center items-center text-center`}
+          >
+            <div className="px-6 lg:px-28 space-y-3">
+              <h1 className="text-2xl lg:text-5xl">Gunung Slamet</h1>
+              <p className="font-medium text-sm lg:text-base">
+                Sebuah gunung berapi yang berada di Jawa Tengah, Indonesia.
+                Gunung Slamet memiliki ketinggian 3.432 mdpl dan terletak di
+                antara 5 kabupaten, yaitu Kabupaten Banyumas, Kabupaten
+                Purbalingga, Kabupaten Brebes, Kabupaten Tegal dan Kabupaten
+                Pemalang.
+              </p>
+              <button
+                onClick={handleScroll}
+                className="bg-green py-3 px-12 font-bold text-black text-sm"
+              >
+                Go Explore
+              </button>
             </div>
-          ))}
-        </div>
+          </div>
+          <div className="px-6 lg:px-12 duration-300 ease-linear">
+            <div id="point" className="py-14">
+              <h1 className="text-3xl pb-8">Destinasi Pilihan</h1>
+              <div className="">
+                <Swiper slidesPerView="4" spaceBetween={50}>
+                  <SwiperSlide>
+                    <Card />
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <Card />
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <Card />
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <Card />
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <Card />
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <Card />
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <Card />
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <Card />
+                  </SwiperSlide>
+                </Swiper>
+              </div>
+            </div>
+          </div>
+        </Layout>
       </div>
     </>
   );
