@@ -1,24 +1,19 @@
-export const Card = () => {
+import { useRouter } from "next/router";
+
+export const Card = ({ title, img, url }) => {
+  const router = useRouter();
   return (
-    <div className="rounded-md overflow-hidden bg-dark shadow-lg">
-      <img src="/images/gunung.jpg" alt="" />
-      <div class="px-6 py-4">
-        <div class="font-bold text-xl mb-2">Gunung Slamet</div>
-        <p class="text-gray-400 text-justify text-base">
-          Sebuah gunung berapi yang berada di Jawa Tengah, Indonesia.
-        </p>
+    <>
+      <div onClick={() => router.push("/wisata")}>
+        <div className="rounded-md relative overflow-hidden bg-dark shadow-lg">
+          <img src={img} alt="card" />
+        </div>
+        <div className="z-30 bottom-5 w-full h-full space-x-3 duration-300 ease-linear flex justify-center text-center px-2 items-end absolute">
+          <div className="font-medium text-xl md:text-base lg:text-lg">
+            {title}
+          </div>
+        </div>
       </div>
-      <div class="px-6 pt-4 pb-2">
-        <span class="inline-block bg-green rounded-full px-3 py-1 text-xs font-semibold text-semi_dark mr-2 mb-2">
-          #pegunungan
-        </span>
-        <span class="inline-block bg-green rounded-full px-3 py-1 text-xs font-semibold text-semi_dark mr-2 mb-2">
-          #raveling
-        </span>
-        <span class="inline-block bg-green rounded-full px-3 py-1 text-xs font-semibold text-semi_dark mr-2 mb-2">
-          #banyumas
-        </span>
-      </div>
-    </div>
+    </>
   );
 };

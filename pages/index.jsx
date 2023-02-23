@@ -8,11 +8,15 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/card";
+import { CardBlur } from "@/components/cardBlur";
+import axios from "axios";
 
 const font = Sora({ subsets: ["latin"] });
 
 export default function Home() {
   const [offset, setOffset] = useState(0);
+  const [wisata, setWisata] = useState([]);
+  console.log(wisata);
 
   function handleScroll() {
     const element = document.getElementById("point");
@@ -21,7 +25,19 @@ export default function Home() {
     }
   }
 
+  function getWisata() {
+    axios
+      .get("/api/wisata/")
+      .then(function (response) {
+        setWisata(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
+    getWisata();
     const onScroll = () => setOffset(window.pageYOffset);
     window.removeEventListener("scroll", onScroll);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -63,32 +79,40 @@ export default function Home() {
           <div className="px-6 lg:px-12 duration-300 ease-linear">
             <div id="point" className="py-14">
               <h1 className="text-3xl pb-8">Destinasi Pilihan</h1>
-              <div className="">
+              <div className="block md:hidden lg:hidden">
+                <Swiper slidesPerView="1" spaceBetween={50}>
+                  {wisata.map((elm, index) => (
+                    <SwiperSlide key={index}>
+                      <Card
+                        title={elm.nama}
+                        desc={elm.deskripsi}
+                        img={elm.gambar}
+                        url={elm.url}
+                      />
+                    </SwiperSlide>
+                  ))}
+                  <SwiperSlide>
+                    <CardBlur />
+                  </SwiperSlide>
+                </Swiper>
+              </div>
+              <div className="hidden md:block lg:block">
                 <Swiper slidesPerView="4" spaceBetween={50}>
-                  <SwiperSlide>
-                    <Card />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Card />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Card />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Card />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Card />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Card />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Card />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Card />
-                  </SwiperSlide>
+                  {wisata.map((elm, index) => (
+                    <SwiperSlide key={index}>
+                      <Card
+                        title={elm.nama}
+                        desc={elm.deskripsi}
+                        img={elm.gambar}
+                        url={elm.url}
+                      />
+                    </SwiperSlide>
+                  ))}
+                  {wisata !== [] && (
+                    <SwiperSlide>
+                      <CardBlur />
+                    </SwiperSlide>
+                  )}
                 </Swiper>
               </div>
             </div>
