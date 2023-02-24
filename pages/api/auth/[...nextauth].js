@@ -6,8 +6,12 @@ export default NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
       async authorize(credentials, req) {
-        var sql = "SELECT * FROM users WHERE username = ?";
+        var sql = "SELECT * FROM users WHERE name = ?";
         const mysql = require("mysql2/promise");
         const username = credentials.username;
         const password = credentials.password;
@@ -19,15 +23,35 @@ export default NextAuth({
         });
         const [rows] = await dbs.execute(sql, [username]);
         const data = rows[0];
+        const user = { id: data.id, name: data.name, role: data.role };
 
         const checkPassword = bcrypt.compareSync(password, data.password);
-        if (!checkPassword) {
-          throw new Error("Password does't match");
-        } else if (data.username !== credentials.username) {
-          throw new Error("Username does't match");
+        if (!checkPassword || data.name !== credentials.username) {
+          throw new Error("Username or Password does't match");
         }
-        return data;
+        return user;
       },
     }),
   ],
+  callbacks: {
+    async session({ session, token }) {
+      var sql = "SELECT * FROM users WHERE name = ?";
+      const mysql = require("mysql2/promise");
+      const username = session.user.name;
+
+      const dbs = await mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        database: "belajar",
+      });
+      const [rows] = await dbs.execute(sql, [username]);
+      const data = rows[0];
+
+      if (session.user) {
+        session.user.role = data.role;
+      }
+
+      return session;
+    },
+  },
 });

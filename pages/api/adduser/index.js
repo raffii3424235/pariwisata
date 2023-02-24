@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     db.connect(function (err) {
       if (err) throw err;
       console.log("Connected!");
-      var sql = "INSERT INTO users(name, password, role) VALUES ?";
+      var sql = "INSERT INTO users(username, password, role) VALUES ?";
       var values = [[username, passCrypt, role]];
       db.query(sql, [values], function (err, result) {
         if (err) throw err;

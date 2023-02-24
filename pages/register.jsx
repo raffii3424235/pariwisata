@@ -9,6 +9,7 @@ export default function Register() {
     initialValues: {
       username: "",
       password: "",
+      role: "",
     },
     onSubmit,
   });
@@ -42,6 +43,14 @@ export default function Register() {
             placeholder="********"
             onChange={formik.handleChange}
             value={formik.values.password}
+          />
+          <input
+            type="text"
+            name="role"
+            id="role"
+            placeholder="role"
+            onChange={formik.handleChange}
+            value={formik.values.role}
           />
           <button type="submit">LOGIN</button>
         </form>

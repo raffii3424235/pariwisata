@@ -2,8 +2,10 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { getSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { Input } from "@material-tailwind/react";
+import { Sidenav } from "@/widgets/layout";
 
-const Admin = (session) => {
+const Dashboard = (session) => {
   const [items, setItems] = useState([]);
   const dataUser = session.session;
 
@@ -56,49 +58,15 @@ const Admin = (session) => {
   }, []);
 
   return (
-    <div>
-      <h1 className="underline">ADMIN PAGE, {dataUser.user.name}</h1>
+    <div className="">
       <div>
-        <form onSubmit={formik.handleSubmit}>
-          <input
-            className="border-2 border-black"
-            type="text"
-            name="title"
-            id="title"
-            onChange={formik.handleChange}
-            value={formik.values.title}
-          />
-          <input
-            className="border-2 border-black"
-            type="text"
-            name="article"
-            id="article"
-            onChange={formik.handleChange}
-            value={formik.values.article}
-          />
-          <button type="submit">Send Blogs</button>
-        </form>
-      </div>
-      <div className="py-8">
-        <button onClick={handleSignOut}>Sign Out</button>
-      </div>
-      <div className="space-y-4">
-        {items.map((elm) => (
-          <div
-            className="bg-blue-600 rounded-md py-4 px-5 text-white"
-            key={elm.id}
-          >
-            <h1>{elm.title}</h1>
-            <p>{elm.article}</p>
-            <button onClick={() => handleDelete(elm.id)}>DELETE</button>
-          </div>
-        ))}
+        <Sidenav />
       </div>
     </div>
   );
 };
 
-export default Admin;
+export default Dashboard;
 
 export async function getServerSideProps({ req }) {
   const session = await getSession({ req });

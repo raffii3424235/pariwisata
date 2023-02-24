@@ -29,13 +29,13 @@ export const Footer = () => {
           </a>
         </div>
         <div className="flex items-center justify-center pt-2 text-sm font-medium">
-          <a className="border-r-2 border-r-black px-3" href="/">
+          <a className="border-r-2 border-r-white px-3" href="/">
             Kebijakan Cookie
           </a>
-          <a className="border-r-2 border-r-black px-3" href="/">
+          <a className="border-r-2 border-r-white px-3" href="/">
             Kebijakan Privasi
           </a>
-          <a className="border-r-2 border-r-black px-3" href="/">
+          <a className="border-r-2 border-r-white px-3" href="/">
             Syarat dan Ketentuan
           </a>
           <a className="px-3" href="/">

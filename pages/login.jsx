@@ -4,11 +4,9 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaUser, FaKey } from "react-icons/fa";
 
-const Login = () => {
+const Login = (session) => {
   const [showErr, setShowErr] = useState(false);
   const router = useRouter();
-
-  console.log(showErr);
 
   const formik = useFormik({
     initialValues: {
@@ -38,7 +36,7 @@ const Login = () => {
       redirect: false,
       username: values.username,
       password: values.password,
-      callbackUrl: "/admin/",
+      callbackUrl: "/dashboard/",
     });
 
     if (status.ok) {
@@ -52,17 +50,17 @@ const Login = () => {
   }
 
   return (
-    <div className="h-screen relative overflow-y-hidden bg-[#ececec]">
+    <div className="h-screen relative overflow-y-hidden bg-semi_dark">
       <div className="absolute w-full top-1/2 m-0 -translate-y-1/2 flex justify-center">
-        <div className="bg-white py-12 px-10 rounded-md drop-shadow-lg">
+        <div className="py-12 px-10 bg-dark rounded-md shadow-xl">
           <div className="text-center mb-10">
-            <h1 className="font-bold text-2xl">ADMIN PANEL</h1>
-            <p className="text-sm text-gray-500">Contol panel login</p>
+            <h1 className="font-bold text-2xl">Dashboard Login</h1>
+            <p className="text-sm text-gray-300">Login ke dashboard</p>
           </div>
           <div>
             <form className="space-y-4" onSubmit={formik.handleSubmit}>
               <div className="flex items-center space-x-2">
-                <FaUser color="#3b82f6" />
+                <FaUser color="#68FE9A" />
                 <input
                   className="bg-transparent focus:outline-none border-b-2 border-gray-700 text-sm py-1 w-64"
                   type="text"
@@ -75,7 +73,7 @@ const Login = () => {
                 />
               </div>
               <div className="flex items-center space-x-2">
-                <FaKey color="#3b82f6" />
+                <FaKey color="#68FE9A" />
                 <input
                   className="bg-transparent focus:outline-none border-b-2 border-gray-700 text-sm py-1 w-64"
                   type="password"
@@ -96,9 +94,9 @@ const Login = () => {
                 <></>
               )}
               <div className="pt-4">
-                <div className="flex justify-center bg-blue-500">
+                <div className="flex justify-center bg-green">
                   <button
-                    className="w-full text-white font-medium py-2 text-base"
+                    className="w-full text-black font-medium py-2 text-base"
                     type="submit"
                   >
                     LOGIN
@@ -121,7 +119,7 @@ export async function getServerSideProps({ req }) {
   if (session) {
     return {
       redirect: {
-        destination: "/admin/",
+        destination: "/dashboard/",
         permanent: false,
       },
     };

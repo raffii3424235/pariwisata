@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     user: "root",
     database: "belajar",
   });
-  const [rows] = await dbs.execute(sql, ["raffi"]);
+  const [rows] = await dbs.execute(sql, ["admin"]);
 
   res.status(200).json(...rows);
 }
